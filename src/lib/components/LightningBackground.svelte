@@ -13,6 +13,7 @@
     export let targetFps = 60;
     export let minSegmentTime = 20;
     export let maxSegmentTime = 30;
+    export let startFromH1 = false; // constrain start point to h1 bounding box
 
     interface Point {
         x: number;
@@ -39,16 +40,58 @@
     let canvasHeight = 0;
     let nextStrikeTime = 0;
     let lastTime = 0;
+    let h1Rect: DOMRect | null = null;
 
     const STRIKE_DURATION = 500; // ms to reach bottom
+
+    function updateH1Rect() {
+        if (!startFromH1) {
+            h1Rect = null;
+            return;
+        }
+        const h1Elements = document.querySelectorAll("h1");
+        for (const h1 of h1Elements) {
+            const rect = h1.getBoundingClientRect();
+            // Check the element is visible (has dimensions and is not hidden)
+            if (rect.width > 0 && rect.height > 0) {
+                const style = window.getComputedStyle(h1);
+                if (
+                    style.display !== "none" &&
+                    style.visibility !== "hidden" &&
+                    parseFloat(style.opacity) > 0
+                ) {
+                    h1Rect = rect;
+                    return;
+                }
+            }
+        }
+        h1Rect = null;
+    }
 
     function getRandom(min: number, max: number) {
         return Math.random() * (max - min) + min;
     }
 
+    function getStartPoint(): Point {
+        if (startFromH1 && h1Rect) {
+            return {
+                x: getRandom(h1Rect.left, h1Rect.right),
+                y: getRandom(h1Rect.top, h1Rect.bottom),
+            };
+        }
+        return {
+            x: getRandom(0, canvasWidth),
+            y: getRandom(0, canvasHeight * topRegion),
+        };
+    }
+
     function generateStrike(): Strike {
-        const startX = getRandom(0, canvasWidth);
-        const startY = getRandom(0, canvasHeight * topRegion);
+        // Refresh h1 position each strike (handles scroll/layout changes)
+        updateH1Rect();
+
+        const start = getStartPoint();
+        const startX = start.x;
+        const startY = start.y;
         const endX = getRandom(0, canvasWidth);
         const endY = getRandom(canvasHeight * (1 - bottomRegion), canvasHeight);
 
