@@ -12,7 +12,8 @@
     export let bottomRegion = 0.2; // fraction of height
     export let minSegmentTime = 20;
     export let maxSegmentTime = 30;
-    export let startFromH1 = false; // constrain start point to h1 bounding box
+    export let startFromMainTitle = false; // constrain start point to main title bounding box
+    export let debug = false;
 
     interface Point {
         x: number;
@@ -39,32 +40,34 @@
     let canvasHeight = 0;
     let nextStrikeTime = 0;
     let lastTime = 0;
-    let h1Rect: DOMRect | null = null;
+    let titleRect: DOMRect | null = null;
 
     const STRIKE_DURATION = 500; // ms to reach bottom
 
-    function updateH1Rect() {
-        if (!startFromH1) {
-            h1Rect = null;
+    function updateTitleRect() {
+        if (!startFromMainTitle) {
+            titleRect = null;
             return;
         }
-        const h1Elements = document.querySelectorAll("h1");
-        for (const h1 of h1Elements) {
-            const rect = h1.getBoundingClientRect();
-            // Check the element is visible (has dimensions and is not hidden)
-            if (rect.width > 0 && rect.height > 0) {
-                const style = window.getComputedStyle(h1);
-                if (
-                    style.display !== "none" &&
-                    style.visibility !== "hidden" &&
-                    parseFloat(style.opacity) > 0
-                ) {
-                    h1Rect = rect;
-                    return;
-                }
+        const titleElement = document.getElementById("main-title");
+        if (!titleElement) {
+            titleRect = null;
+            return;
+        }
+        const rect = titleElement.getBoundingClientRect();
+        // Check the element is visible (has dimensions and is not hidden)
+        if (rect.width > 0 && rect.height > 0) {
+            const style = window.getComputedStyle(titleElement);
+            if (
+                style.display !== "none" &&
+                style.visibility !== "hidden" &&
+                parseFloat(style.opacity) > 0
+            ) {
+                titleRect = rect;
+                return;
             }
         }
-        h1Rect = null;
+        titleRect = null;
     }
 
     function getRandom(min: number, max: number) {
@@ -72,10 +75,13 @@
     }
 
     function getStartPoint(): Point {
-        if (startFromH1 && h1Rect) {
+        if (startFromMainTitle && titleRect) {
             return {
-                x: getRandom(h1Rect.left, h1Rect.right),
-                y: getRandom(h1Rect.top, h1Rect.bottom),
+                x: getRandom(titleRect.left, titleRect.right),
+                y: getRandom(
+                    titleRect.top + titleRect.height * 0.4,
+                    titleRect.bottom - titleRect.height * 0.4,
+                ),
             };
         }
         return {
@@ -85,8 +91,8 @@
     }
 
     function generateStrike(): Strike {
-        // Refresh h1 position each strike (handles scroll/layout changes)
-        updateH1Rect();
+        // Refresh title position each strike (handles scroll/layout changes)
+        updateTitleRect();
 
         const start = getStartPoint();
         const startX = start.x;
@@ -233,6 +239,26 @@
                 </feMerge>
             </filter>
         </defs>
+
+        {#if debug}
+            {#if startFromMainTitle && titleRect}
+                <rect
+                    x={titleRect.left}
+                    y={titleRect.top + titleRect.height * 0.4}
+                    width={titleRect.width}
+                    height={titleRect.height * 0.2}
+                    fill="red"
+                />
+            {:else}
+                <rect
+                    x="0"
+                    y="0"
+                    width="100%"
+                    height={canvasHeight * topRegion}
+                    fill="red"
+                />
+            {/if}
+        {/if}
 
         {#each strikes as strike (strike.id)}
             <g
