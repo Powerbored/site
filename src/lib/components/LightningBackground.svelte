@@ -10,7 +10,6 @@
     export let maxBranches = 6;
     export let topRegion = 0.2; // fraction of height
     export let bottomRegion = 0.2; // fraction of height
-    export let targetFps = 60;
     export let minSegmentTime = 20;
     export let maxSegmentTime = 30;
     export let startFromH1 = false; // constrain start point to h1 bounding box
@@ -153,7 +152,6 @@
     }
 
     function update(time: number) {
-        const deltaTime = time - lastTime;
         lastTime = time;
 
         if (time > nextStrikeTime) {
