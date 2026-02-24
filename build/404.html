@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<link rel="icon" href="/site/favicon.svg" />
+	<meta name="viewport" content="width=device-width" />
+	<script>
+		// On page load or when changing themes, best to add inline in `head` to avoid FOUC
+		if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+			document.documentElement.classList.add('dark');
+		} else {
+			document.documentElement.classList.remove('dark');
+		}
+	</script>
+	<link href="/site/_app/immutable/entry/start.DmvCfG66.js" rel="modulepreload">
+		<link href="/site/_app/immutable/chunks/CzsEr5v2.js" rel="modulepreload">
+		<link href="/site/_app/immutable/chunks/jY4nZZVi.js" rel="modulepreload">
+		<link href="/site/_app/immutable/chunks/DOH63AGW.js" rel="modulepreload">
+		<link href="/site/_app/immutable/chunks/CcHa-LIt.js" rel="modulepreload">
+		<link href="/site/_app/immutable/entry/app.CLkILN9n.js" rel="modulepreload">
+		<link href="/site/_app/immutable/chunks/C6PAWBuj.js" rel="modulepreload">
+		<link href="/site/_app/immutable/chunks/D5rQvEft.js" rel="modulepreload">
+		<link href="/site/_app/immutable/chunks/CMJxDM0U.js" rel="modulepreload">
+		
+</head>
+
+<body data-sveltekit-preload-data="hover">
+	<div style="display: contents">
+			<script>
+				{
+					__sveltekit_1qbmzdq = {
+						base: "/site",
+						assets: "/site"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("/site/_app/immutable/entry/start.DmvCfG66.js"),
+						import("/site/_app/immutable/entry/app.CLkILN9n.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element);
+					});
+				}
+			</script>
+		</div>
+</body>
+
+</html>

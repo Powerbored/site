@@ -1,12 +1,13 @@
 <script lang="ts">
     import { onMount, onDestroy } from "svelte";
+    import { base } from "$app/paths";
     import { page } from "$app/stores";
     import Icon from "$lib/components/Icon.svelte";
 
     const menuItems = [
-        { href: "/", label: "Home", icon: "home" as const },
+        { href: `${base}/`, label: "Home", icon: "home" as const },
         {
-            href: "/experiments",
+            href: `${base}/experiments`,
             label: "Experiments",
             icon: "test-tube" as const,
         },

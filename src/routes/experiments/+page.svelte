@@ -1,7 +1,6 @@
 <script>
-    const experiments = [
-        { id: 'hello-world', title: 'Hello World' }
-    ];
+    import { base } from "$app/paths";
+    const experiments = [{ id: "hello-world", title: "Hello World" }];
 </script>
 
 <div class="container mx-auto p-4">
@@ -9,7 +8,10 @@
     <ul class="list-disc pl-5">
         {#each experiments as experiment}
             <li>
-                <a href="/experiments/{experiment.id}" class="text-blue-600 hover:underline">
+                <a
+                    href="{base}/experiments/{experiment.id}"
+                    class="text-blue-600 hover:underline"
+                >
                     {experiment.title}
                 </a>
             </li>
