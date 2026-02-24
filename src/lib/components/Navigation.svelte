@@ -1,10 +1,15 @@
 <script lang="ts">
     import { onMount, onDestroy } from "svelte";
     import { page } from "$app/stores";
+    import Icon from "$lib/components/Icon.svelte";
 
     const menuItems = [
-        { href: "/", label: "Home", icon: "🏠" },
-        { href: "/experiments", label: "Experiments", icon: "🧪" },
+        { href: "/", label: "Home", icon: "home" as const },
+        {
+            href: "/experiments",
+            label: "Experiments",
+            icon: "test-tube" as const,
+        },
     ];
 
     let theme: "light" | "dark" | "auto" = "auto";
@@ -71,7 +76,13 @@
         applyTheme(theme);
     }
 
-    $: icon = theme === "auto" ? "🖥️" : theme === "dark" ? "🌙" : "☀️";
+    $: iconName = (
+        theme === "auto"
+            ? "settings"
+            : theme === "dark"
+              ? "dark-mode"
+              : "light-mode"
+    ) as "settings" | "dark-mode" | "light-mode";
     $: label =
         theme === "auto"
             ? `System (${systemTheme === "dark" ? "Dark" : "Light"})`
@@ -94,8 +105,10 @@
                         ? "page"
                         : undefined}
                 >
-                    <span class="text-xl w-8 text-center" aria-hidden="true"
-                        >{item.icon}</span
+                    <span
+                        class="text-xl w-8 text-center flex items-center justify-center h-full"
+                        aria-hidden="true"
+                        ><Icon name={item.icon} size={24} /></span
                     >
                     <span
                         class="opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300 font-medium delay-75"
@@ -112,7 +125,10 @@
         class="flex items-center h-12 px-4 gap-4 text-gray-800 dark:text-gray-200 hover:bg-black/5 dark:hover:bg-white/10 transition-colors whitespace-nowrap outline-none focus:bg-black/5 dark:focus:bg-white/10 rounded-r-lg mr-2 w-full text-left"
         aria-label="Toggle Theme"
     >
-        <span class="text-xl w-8 text-center" aria-hidden="true">{icon}</span>
+        <span
+            class="text-xl w-8 text-center flex items-center justify-center h-full"
+            aria-hidden="true"><Icon name={iconName} size={24} /></span
+        >
         <span
             class="opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300 font-medium delay-75"
         >
