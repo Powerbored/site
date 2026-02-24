@@ -11,6 +11,7 @@
             label: "Experiments",
             icon: "test-tube" as const,
         },
+        { href: `${base}/tz`, label: "Timezone", icon: "clock" as const },
     ];
 
     let theme: "light" | "dark" | "auto" = "auto";

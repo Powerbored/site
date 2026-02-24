@@ -75,6 +75,12 @@
             filled: `<circle cx="11" cy="11" r="8" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></circle>
 					 <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></line>`,
         },
+        clock: {
+            hollow: `<circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"></circle>
+                     <polyline points="12 6 12 12 16 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline>`,
+            filled: `<circle cx="12" cy="12" r="10" fill="currentColor"></circle>
+                     <polyline points="12 6 12 12 16 14" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline>`,
+        },
     } as const;
 
     type IconName = keyof typeof paths;
