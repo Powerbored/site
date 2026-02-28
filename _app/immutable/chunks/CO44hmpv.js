@@ -1,0 +1,1 @@
+import{A as t,B as S,u as b,E as h,S as k}from"./CMcu3gHP.js";function u(r,i){return r===i||r?.[k]===i}function E(r={},i,a,A){return t(()=>{var f,s;return S(()=>{f=s,s=[],b(()=>{r!==a(...s)&&(i(r,...s),f&&u(a(...f),r)&&i(null,...f))})}),()=>{h(()=>{s&&u(a(...s),r)&&i(null,...s)})}}),r}export{E as b};

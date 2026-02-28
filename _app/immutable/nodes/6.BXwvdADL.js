@@ -1,0 +1,1 @@
+import{b as e,f as a}from"../chunks/C5wwsm_B.js";import"../chunks/DjHNPOwP.js";var r=a('<div class="container mx-auto p-4"><h1 class="text-xl font-bold">Hello World Experiment</h1> <p class="mt-2">This is a sample experiment to verify the routing.</p></div>');function s(o){var t=r();e(o,t)}export{s as component};
