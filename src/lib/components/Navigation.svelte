@@ -112,18 +112,31 @@
             <li>
                 <a
                     href={item.href}
-                    class="flex items-center h-12 px-4 gap-4 text-gray-800 dark:text-gray-200 hover:bg-black/5 dark:hover:bg-white/10 transition-colors whitespace-nowrap outline-none focus:bg-black/5 dark:focus:bg-white/10 rounded-r-lg mr-2"
+                    class="flex items-center h-12 px-4 gap-4 hover:bg-black/5 dark:hover:bg-white/10 transition-colors whitespace-nowrap outline-none focus:bg-black/5 dark:focus:bg-white/10 rounded-r-lg mr-2 {$page
+                        .url.pathname === item.href
+                        ? 'text-cyan-600 dark:text-cyan-400 bg-black/5 dark:bg-white/5 font-semibold'
+                        : 'text-gray-800 dark:text-gray-200 font-medium'}"
                     aria-current={$page.url.pathname === item.href
                         ? "page"
                         : undefined}
                 >
                     <span
-                        class="text-xl w-8 text-center flex items-center justify-center h-full"
+                        class="text-xl w-8 text-center flex items-center justify-center h-full {$page
+                            .url.pathname === item.href
+                            ? 'text-cyan-500 dark:text-cyan-400'
+                            : ''}"
                         aria-hidden="true"
-                        ><Icon name={item.icon} size={24} /></span
                     >
+                        <Icon
+                            name={item.icon}
+                            size={24}
+                            variant={$page.url.pathname === item.href
+                                ? "filled"
+                                : "hollow"}
+                        />
+                    </span>
                     <span
-                        class="opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300 font-medium delay-75"
+                        class="opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300 delay-75"
                     >
                         {item.label}
                     </span>
