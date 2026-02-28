@@ -1,0 +1,1 @@
+import{a,f as e}from"../chunks/BLe_gkQ9.js";import"../chunks/CkIK--H9.js";var r=e('<div class="container mx-auto p-4"><h1 class="text-xl font-bold">Hello World Experiment</h1> <p class="mt-2">This is a sample experiment to verify the routing.</p></div>');function s(o){var t=r();a(o,t)}export{s as component};
