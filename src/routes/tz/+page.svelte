@@ -7,11 +7,13 @@
     let city = "";
     let utcOffset = "";
     let longTZ = "";
+    let longTZInitials = "";
     let nextTransition: {
         date: Date;
         type: string;
         days: number;
         nextTZ: string;
+        nextTZInitials: string;
     } | null = null;
 
     function updateTime() {
@@ -39,6 +41,10 @@
             longFormatter
                 .formatToParts(now)
                 .find((p) => p.type === "timeZoneName")?.value || "";
+        longTZInitials = longTZ
+            .split(" ")
+            .map((word) => word[0])
+            .join("");
 
         // DST check - check next 365 days
         findNextTransition();
@@ -71,12 +77,17 @@
                     longFormatter
                         .formatToParts(futureDate)
                         .find((p) => p.type === "timeZoneName")?.value || "";
+                const nextTZInitials = nextTZ
+                    .split(" ")
+                    .map((word) => word[0])
+                    .join("");
 
                 nextTransition = {
                     date: checkDate,
                     type,
                     days,
                     nextTZ,
+                    nextTZInitials,
                 };
                 return;
             }
@@ -95,7 +106,6 @@
         hour12: false,
         hour: "2-digit",
         minute: "2-digit",
-        second: "2-digit",
     });
     $: dateStr = now.toLocaleDateString("en-US", {
         weekday: "long",
@@ -116,30 +126,28 @@
 <div
     class="relative min-h-screen overflow-hidden flex flex-col items-center justify-center p-4"
 >
-    <LightningBackground startFromMainTitle={true} />
-
     <div
-        class="relative z-10 w-full max-w-2xl bg-white/10 dark:bg-slate-900/40 backdrop-blur-3xl border border-white/20 dark:border-slate-700/50 rounded-[2.5rem] p-8 md:p-12 shadow-2xl transition-all duration-700 hover:bg-white/15 dark:hover:bg-slate-900/50"
+        class="relative z-10 w-full max-w-2xl bg-white/10 dark:bg-slate-900/40 backdrop-blur-3xl border border-white/20 dark:border-slate-700/50 rounded-[2.5rem] p-4 md:p-12 shadow-2xl transition-all duration-700 hover:bg-white/15 dark:hover:bg-slate-900/50"
     >
-        <header class="text-center mb-12">
+        <header class="text-center mb-6 md:mb-12">
             <h1
                 id="main-title"
-                class="inline-block text-5xl md:text-7xl font-black italic tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-blue-600 to-cyan-400 dark:from-sky-300 dark:to-indigo-400 mb-2 drop-shadow-sm"
+                class="inline-block text-5xl md:text-7xl font-black italic tracking-tighter mb-2 drop-shadow-sm"
             >
                 {city}
             </h1>
             <p
-                class="text-lg text-slate-600 dark:text-slate-400 font-bold tracking-widest uppercase opacity-70"
+                class="text-slate-600 dark:text-slate-400 font-bold tracking-widest uppercase opacity-70"
             >
                 {timezone}
             </p>
         </header>
 
-        <div class="space-y-12">
+        <div class="space-y-6 md:space-y-12">
             <!-- Main Clock -->
             <div class="text-center group">
                 <div
-                    class="text-7xl md:text-[9rem] font-mono font-black tracking-tighter text-slate-900 dark:text-white mb-4 tabular-nums transition-transform duration-500 group-hover:scale-105"
+                    class="text-4xl md:text-[5rem] font-mono font-black tracking-tighter text-slate-900 dark:text-white mb-4 tabular-nums"
                 >
                     {timeStr}
                 </div>
@@ -152,13 +160,13 @@
 
             <!-- Stats Grid -->
             <div
-                class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-8 border-t border-slate-900/5 dark:border-white/5"
+                class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 pt-6 md:pt-12 border-t border-slate-900/5 dark:border-white/5"
             >
                 <div
-                    class="p-6 rounded-3xl bg-slate-900/5 dark:bg-white/5 border border-white/5 group hover:border-blue-500/30 transition-colors"
+                    class="p-4 md:p-6 rounded-3xl bg-slate-900/5 dark:bg-white/5 border border-white/5 group hover:border-blue-500/30 transition-colors"
                 >
                     <div
-                        class="text-[10px] font-black uppercase tracking-[0.2em] text-blue-500 dark:text-sky-400 mb-2"
+                        class="font-black uppercase tracking-[0.2em] text-blue-500 dark:text-sky-400 mb-2"
                     >
                         UTC Offset
                     </div>
@@ -169,17 +177,18 @@
                     </div>
                 </div>
                 <div
-                    class="p-6 rounded-3xl bg-slate-900/5 dark:bg-white/5 border border-white/5 group hover:border-blue-500/30 transition-colors"
+                    class="p-4 md:p-6 rounded-3xl bg-slate-900/5 dark:bg-white/5 border border-white/5 group hover:border-blue-500/30 transition-colors"
                 >
                     <div
-                        class="text-[10px] font-black uppercase tracking-[0.2em] text-blue-500 dark:text-sky-400 mb-2"
+                        class="font-black uppercase tracking-[0.2em] text-blue-500 dark:text-sky-400 mb-2"
                     >
                         Region Name
                     </div>
                     <div
-                        class="text-2xl font-bold text-slate-800 dark:text-slate-100 line-clamp-1"
+                        class="text-3xl font-bold text-slate-800 dark:text-slate-100"
+                        title={longTZ}
                     >
-                        {longTZ}
+                        {longTZInitials}
                     </div>
                 </div>
             </div>
@@ -187,7 +196,7 @@
             <!-- DST Alert -->
             {#if nextTransition}
                 <div
-                    class="mt-8 p-8 rounded-3xl bg-gradient-to-br from-blue-600/10 to-indigo-600/10 border border-blue-500/20 text-center animate-pulse-slow"
+                    class="mt-8 p-4 md:p-6 rounded-3xl bg-gradient-to-br from-blue-600/10 to-indigo-600/10 border border-blue-500/20 text-center animate-pulse-slow"
                 >
                     <div class="flex flex-col items-center gap-2">
                         <span
@@ -211,9 +220,10 @@
                         <p
                             class="text-xs mt-4 text-slate-500 dark:text-slate-400 uppercase tracking-[0.3em] font-black"
                         >
-                            Next Phase: <span
-                                class="text-blue-500 dark:text-sky-400"
-                                >{nextTransition.nextTZ}</span
+                            Next Phase<span
+                                class="block text-3xl font-bold text-slate-800 dark:text-slate-100"
+                                title={nextTransition.nextTZ}
+                                >{nextTransition.nextTZInitials}</span
                             >
                         </p>
                     </div>
@@ -228,13 +238,6 @@
                 </div>
             {/if}
         </div>
-    </div>
-
-    <!-- Background Text -->
-    <div
-        class="fixed bottom-0 left-0 right-0 text-center leading-none text-slate-400/5 dark:text-slate-800/10 font-black text-[25vw] pointer-events-none select-none -z-10 uppercase transition-colors duration-1000"
-    >
-        Time
     </div>
 </div>
 
