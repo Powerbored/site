@@ -5,13 +5,23 @@
     import Icon from "$lib/components/Icon.svelte";
 
     const menuItems = [
-        { href: `${base}/`, label: "Home", icon: "home" as const },
+        {
+            href: `${base}/`,
+            label: "Powerbored",
+            icon: "lightning-bolt" as const,
+        },
         {
             href: `${base}/experiments`,
             label: "Experiments",
             icon: "test-tube" as const,
         },
         { href: `${base}/tz`, label: "Timezone", icon: "clock" as const },
+        {
+            href: `${base}/birthday`,
+            label: "Birthday",
+            icon: "birthday" as const,
+        },
+        { href: `${base}/chat`, label: "Chat", icon: "chat" as const },
     ];
 
     let theme: "light" | "dark" | "auto" = "auto";
