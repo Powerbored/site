@@ -140,3 +140,6 @@ vite.config.ts.timestamp-*
 
 .vscode
 .npm-cache
+
+# SvelteKit build output
+build
