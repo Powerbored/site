@@ -196,36 +196,33 @@
             <!-- DST Alert -->
             {#if nextTransition}
                 <div
-                    class="mt-8 p-4 md:p-6 rounded-3xl bg-gradient-to-br from-blue-600/10 to-indigo-600/10 border border-blue-500/20 text-center animate-pulse-slow"
+                    class="mt-8 p-4 md:p-6 rounded-3xl bg-gradient-to-br from-blue-600/10 to-indigo-600/10 border border-white/5 hover:border-blue-500/30 transition-colors text-center animate-pulse-slow"
                 >
                     <div class="flex flex-col items-center gap-2">
                         <span
                             class="text-blue-600 dark:text-sky-300 font-bold text-lg"
                         >
-                            Daylight Savings {nextTransition.type === "starts"
+                            Days until Daylight Savings {nextTransition.type ===
+                            "starts"
                                 ? "begins"
-                                : "ends"} in
+                                : "ends"}
                         </span>
-                        <div class="flex items-baseline gap-2">
-                            <span
-                                class="text-5xl md:text-6xl font-black text-slate-900 dark:text-white tabular-nums drop-shadow-md"
-                            >
-                                {nextTransition.days}
-                            </span>
-                            <span
-                                class="text-xl font-bold text-slate-500 uppercase tracking-tighter"
-                                >Days</span
-                            >
-                        </div>
-                        <p
-                            class="text-xs mt-4 text-slate-500 dark:text-slate-400 uppercase tracking-[0.3em] font-black"
+                        <span
+                            class="text-5xl md:text-6xl font-black text-slate-900 dark:text-white tabular-nums drop-shadow-md"
                         >
-                            Next Phase<span
-                                class="block text-3xl font-bold text-slate-800 dark:text-slate-100"
-                                title={nextTransition.nextTZ}
-                                >{nextTransition.nextTZInitials}</span
-                            >
-                        </p>
+                            {nextTransition.days}
+                        </span>
+                        <div
+                            class="font-black uppercase tracking-[0.2em] text-blue-500 dark:text-sky-400"
+                        >
+                            Next Phase
+                        </div>
+                        <div
+                            class="text-3xl font-bold text-slate-800 dark:text-slate-100"
+                            title={nextTransition.nextTZ}
+                        >
+                            {nextTransition.nextTZInitials}
+                        </div>
                     </div>
                 </div>
             {:else}
