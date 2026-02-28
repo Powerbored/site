@@ -1,6 +1,5 @@
 <script lang="ts">
-    import { page } from "$app/stores";
-    import { onMount, tick } from "svelte";
+    import { onMount } from "svelte";
 
     const themes = {
         neon: {
@@ -93,8 +92,8 @@
     };
     let emojisToRender: EmojiRender[] = [];
 
-    $: {
-        const urlParams = $page.url.searchParams;
+    function readSharedParams() {
+        const urlParams = new URLSearchParams(window.location.search);
         if (
             urlParams.has("to") &&
             urlParams.has("from") &&
@@ -146,6 +145,7 @@
     let origin = "";
     onMount(() => {
         origin = window.location.origin;
+        readSharedParams();
     });
 
     $: generatedLink = `${origin}/birthday?to=${encodeURIComponent(toName)}&from=${encodeURIComponent(fromName)}&msg=${selectedMessageIndex}&theme=${selectedThemeId}`;
@@ -354,6 +354,7 @@
 
                 <div class="space-y-3">
                     <label
+                        for="theme"
                         class="block text-sm font-black uppercase tracking-widest text-slate-500 dark:text-slate-400"
                         >Theme</label
                     >
