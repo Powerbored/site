@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import LightningBackground from "$lib/components/LightningBackground.svelte";
+    import Title from "$lib/components/content/Title.svelte";
 
     let now = new Date();
     let timezone = "";
@@ -130,12 +131,7 @@
         class="relative z-10 w-full max-w-2xl bg-white/10 dark:bg-slate-900/40 backdrop-blur-3xl border border-white/20 dark:border-slate-700/50 rounded-[2.5rem] p-4 md:p-12 shadow-2xl transition-all duration-700 hover:bg-white/15 dark:hover:bg-slate-900/50"
     >
         <header class="text-center mb-6 md:mb-12">
-            <h1
-                id="main-title"
-                class="inline-block text-5xl md:text-7xl font-black italic tracking-tighter mb-2 drop-shadow-sm"
-            >
-                {city}
-            </h1>
+            <Title type="h1" text={city} />
             <p
                 class="text-slate-600 dark:text-slate-400 font-bold tracking-widest uppercase opacity-70"
             >
