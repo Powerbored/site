@@ -72,7 +72,7 @@
 ></div>
 
 <div
-    class="fixed inset-0 w-screen h-screen z-[100] {sharedTheme.bg} flex flex-col items-center justify-center overflow-hidden transition-opacity duration-700 m-0 p-0"
+    class="fixed inset-0 w-screen h-screen z-[100] {sharedTheme.bg} flex flex-col items-center justify-center overflow-hidden transition-opacity duration-700 m-0 p-4 pb-20"
     class:opacity-100={ready}
     class:opacity-0={!ready}
 >
@@ -90,18 +90,18 @@
 
     <!-- Content card -->
     <div
-        class="relative z-10 text-center max-w-5xl md:mx-auto space-y-6 md:space-y-10 p-4 md:p-20 rounded-[4rem] bg-white/10 dark:bg-black/20 backdrop-blur-3xl border border-white/30 shadow-2xl hover:bg-white/20 dark:hover:bg-black/30 transition-all duration-700 hover:scale-[1.02] m-4"
+        class="relative z-10 text-center max-w-5xl mx-auto space-y-6 md:space-y-10 p-6 md:p-14 lg:p-20 rounded-[4rem] bg-white/10 dark:bg-black/20 backdrop-blur-3xl border border-white/30 shadow-2xl hover:bg-white/20 dark:hover:bg-black/30 transition-all duration-700 hover:scale-[1.02]"
     >
         <h1
             class="text-6xl md:text-9xl font-black mb-6 {sharedTheme.text} tracking-tighter"
         >
-            Happy Birthday, <br class="md:hidden" />{sharedTo}!
+            Happy Birthday,&ensp;<br class="md:hidden" />{sharedTo}!
         </h1>
 
         <p
             class="text-3xl md:text-5xl font-bold italic opacity-90 {sharedTheme.text} leading-relaxed py-8"
         >
-            "{sharedMessage.replace("{name}", sharedTo)}"
+            {sharedMessage.replace("{name}", sharedTo)}
         </p>
 
         <div class="pt-8 border-t border-white/30 inline-block px-12">
@@ -117,7 +117,7 @@
     <a
         href="/"
         aria-label="Go to home page"
-        class="absolute bottom-6 right-6 md:bottom-10 md:right-10 p-4 bg-white/10 hover:bg-white/25 backdrop-blur-xl rounded-full text-cyan-400 hover:text-cyan-600 transition-all border border-white/20 z-20 shadow-xl hover:scale-110 active:scale-95"
+        class="absolute bottom-4 right-4 p-4 bg-white/10 hover:bg-white/25 backdrop-blur-xl rounded-full text-cyan-400 hover:text-cyan-600 transition-all border border-white/20 z-20 shadow-xl hover:scale-110 active:scale-95"
     >
         <Icon name="lightning-bolt" variant="filled" size={24} />
     </a>
