@@ -1,6 +1,5 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import LightningBackground from "$lib/components/LightningBackground.svelte";
     import Title from "$lib/components/content/Title.svelte";
 
     let now = new Date();

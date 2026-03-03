@@ -127,13 +127,11 @@
                             : ''}"
                         aria-hidden="true"
                     >
-                        <Icon
-                            name={item.icon}
-                            size={24}
-                            variant={$page.url.pathname === item.href
-                                ? "filled"
-                                : "hollow"}
-                        />
+                        {#if $page.url.pathname === item.href}
+                            <Icon name={item.icon} size={24} variant="filled" />
+                        {:else}
+                            <Icon name={item.icon} size={24} variant="hollow" />
+                        {/if}
                     </span>
                     <span
                         class="opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300 delay-75"

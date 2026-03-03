@@ -78,8 +78,12 @@
         clock: {
             hollow: `<circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"></circle>
                      <polyline points="12 6 12 12 16 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline>`,
-            filled: `<circle cx="12" cy="12" r="10" fill="currentColor"></circle>
-                     <polyline points="12 6 12 12 16 14" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline>`,
+            filled: `<mask id="clock_filled-mask">
+                        <circle cx="12" cy="12" r="10" fill="white"></circle>
+                        <polyline points="12 6 12 12 16 14" fill="none" stroke="black" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round"></polyline>
+                    </mask>
+                    <circle cx="12" cy="12" r="10" fill="currentColor" mask="url(#clock_filled-mask)"></circle>`,
         },
         chat: {
             hollow: `<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>`,
