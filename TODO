@@ -1,0 +1,36 @@
+## ideas
+
+- Gameboy Advance splash screen
+- Web terminal
+- ~~Birthday message~~
+- ~~P2P chat~~
+- QR generator
+- sed generator
+- awk generator
+- RPG character sheet generator
+
+## bugs
+
+navigation icon not filled when acessing page by URL
+ - crude fix in place using {#if} to force render
+ - still has a delay where the current nav item is not highlighted
+ - nav needs rework to use routing properly, rather than relying on page.url
+
+## improvements
+
+### navigation
+
+- generate nav based on routes
+- store nav data in page files?
+
+### icons
+
+icons could be better, would prefer to use actual svg files with svg use if 
+this can be SSR so that the required icons are available on load.
+
+### chat
+
+- save chats with name
+- make joining easier
+- make QR popover on click
+
