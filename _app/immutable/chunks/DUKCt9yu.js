@@ -1,0 +1,1 @@
+import{ab as b,ac as t,u as S,a5 as c,S as h}from"./DKCu6dAL.js";function u(r,a){return r===a||r?.[h]===a}function d(r={},a,f,k){return b(()=>{var i,s;return t(()=>{i=s,s=[],S(()=>{r!==f(...s)&&(a(r,...s),i&&u(f(...i),r)&&a(null,...i))})}),()=>{c(()=>{s&&u(f(...s),r)&&a(null,...s)})}}),r}export{d as b};
