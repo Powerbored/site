@@ -8,13 +8,18 @@
 - sed generator
 - awk generator
 - RPG character sheet generator
+- Radial thumb nav for mobile
 
 ## bugs
 
-navigation icon not filled when acessing page by URL
- - crude fix in place using {#if} to force render
- - still has a delay where the current nav item is not highlighted
- - nav needs rework to use routing properly, rather than relying on page.url
+### navigation 
+
+- icon not filled when acessing page by URL
+  - crude fix in place using {#if} to force render
+  - still has a delay where the current nav item is not highlighted
+  - nav needs rework to use routing properly, rather than relying on page.url
+- menu get stuck open sometimes
+  - birthday page
 
 ## improvements
 

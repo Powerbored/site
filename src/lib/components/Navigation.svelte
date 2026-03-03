@@ -16,6 +16,7 @@
             icon: "test-tube" as const,
         },
         { href: `${base}/tz`, label: "Timezone", icon: "clock" as const },
+        { href: `${base}/qr`, label: "QR Code", icon: "search" as const },
         {
             href: `${base}/birthday`,
             label: "Birthday",
