@@ -105,7 +105,7 @@
 </script>
 
 <nav
-    class="group fixed left-0 top-0 h-screen w-16 bg-white/10 backdrop-blur-md border-r border-white/20 transition-all duration-300 hover:w-64 focus-within:w-64 z-50 flex flex-col pt-4 overflow-hidden shadow-lg dark:bg-black/30 dark:border-white/10 justify-between pb-4"
+    class="group fixed left-0 top-0 h-screen w-16 bg-white/10 backdrop-blur-md border-r border-white/20 transition-all duration-300 hover:w-64 focus-within:w-64 z-50 hidden md:flex flex-col pt-4 overflow-hidden shadow-lg dark:bg-black/30 dark:border-white/10 justify-between pb-4"
     aria-label="Main Navigation"
 >
     <ul class="flex flex-col gap-2 w-full">
