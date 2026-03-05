@@ -120,10 +120,9 @@
     const INNER_RADIUS = 90; // px from FAB centre
     const RING_SPACING = 70; // px between concentric rings
     const ITEM_SPACING = 60; // min px arc length between items
-    // Arc spans from ~195° to ~285° — upper-left quadrant from bottom-right corner
-    // Slightly inset from pure 180°–270° to keep all items comfortably on screen
-    const ARC_START = Math.PI * (195 / 180); // 195°
-    const ARC_END = Math.PI * (285 / 180); // 285°
+    // First item vertically aligned to center (up, 270°), last horizontally aligned (left, 180°)
+    const ARC_START = Math.PI * 1.5; // 270°
+    const ARC_END = Math.PI; // 180°
 
     $: positions = calculatePositions(allItems.length);
 
@@ -134,7 +133,7 @@
 
         while (remaining > 0) {
             const r = INNER_RADIUS + ring * RING_SPACING;
-            const arcLength = r * (ARC_END - ARC_START);
+            const arcLength = r * Math.abs(ARC_END - ARC_START);
             // How many items can fit in this ring's arc segment? (at least 1)
             const maxItems = Math.max(
                 1,
@@ -304,7 +303,7 @@
 <!-- Radial items -->
 {#if isOpen}
     <div
-        class="fixed bottom-6 right-6 z-[999]"
+        class="fixed bottom-6 right-6 w-14 h-14 z-[999] pointer-events-none"
         role="menu"
         aria-label="Navigation menu"
     >
@@ -315,7 +314,7 @@
             {@const isHovered = hoveredIndex === i}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <div
-                class="radial-item absolute flex items-center justify-center"
+                class="radial-item absolute flex items-center justify-center pointer-events-auto"
                 style="
                     --tx: {pos.x}px;
                     --ty: {pos.y}px;
