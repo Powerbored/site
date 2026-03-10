@@ -1,0 +1,1 @@
+import{B as t,ag as S,y as b,aa as h,S as k}from"./KPfQ_AIB.js";function u(r,a){return r===a||r?.[k]===a}function c(r={},a,f,B){return t(()=>{var i,s;return S(()=>{i=s,s=[],b(()=>{r!==f(...s)&&(a(r,...s),i&&u(f(...i),r)&&a(null,...i))})}),()=>{h(()=>{s&&u(f(...s),r)&&a(null,...s)})}}),r}export{c as b};
