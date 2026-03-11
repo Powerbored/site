@@ -1,1 +1,0 @@
-import{H as y,I as u,ak as _,al as o,h as t,U as g,af as l,R as i,K as d,T as p,M as m}from"./KPfQ_AIB.js";function T(n,r){let a=null,f=t;var s;if(t){a=p;for(var e=m(document.head);e!==null&&(e.nodeType!==g||e.data!==n);)e=l(e);if(e===null)i(!1);else{var E=l(e);e.remove(),d(E)}}t||(s=document.head.appendChild(y()));try{u(()=>r(s),_|o)}finally{f&&(i(!0),d(a))}}export{T as h};
