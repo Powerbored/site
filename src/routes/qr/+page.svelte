@@ -38,27 +38,6 @@
 
     // --- Generate Mode ---
     let qrGeneratorComponent: QrGenerator | undefined = $state();
-
-    async function copyGeneratedQR() {
-        if (!qrGeneratorComponent) return;
-        const canvas = qrGeneratorComponent.getCanvas();
-        if (!canvas) return;
-        canvas.toBlob(async (blob) => {
-            if (blob) {
-                try {
-                    await navigator.clipboard.write([
-                        new ClipboardItem({ "image/png": blob }),
-                    ]);
-                    alert("Image copied to clipboard!");
-                } catch (err) {
-                    console.error("Failed to copy image: ", err);
-                    alert(
-                        "Failed to copy image. Your browser might not support this.",
-                    );
-                }
-            }
-        }, "image/png");
-    }
 </script>
 
 <div
@@ -185,29 +164,6 @@
                             darkColor="#0891b2"
                         />
                     </div>
-
-                    <button
-                        on:click={copyGeneratedQR}
-                        disabled={!text.trim()}
-                        class="mt-4 px-6 py-4 rounded-xl font-bold transition-all flex items-center justify-center gap-2 {text.trim()
-                            ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:scale-[1.02] active:scale-95 shadow-xl shadow-cyan-500/20'
-                            : 'bg-gray-200 dark:bg-white/5 text-gray-400 dark:text-gray-500 cursor-not-allowed'}"
-                    >
-                        <svg
-                            class="w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                            ><path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-                            ></path></svg
-                        >
-                        Copy Rendered Image
-                    </button>
                 </div>
             {/if}
         </div>
