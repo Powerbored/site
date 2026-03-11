@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount, onDestroy } from "svelte";
-    import QRCode from "qrcode";
+    import QrGenerator from "$lib/components/QrGenerator.svelte";
+    import QrReader from "$lib/components/QrReader.svelte";
     import { goto } from "$app/navigation";
     import {
         chatManager,
@@ -27,10 +28,10 @@
     let base64Payload = "";
     let generatedUrl = "";
     let answerInput = "";
-    let qrCanvas: HTMLCanvasElement;
     let copySuccess = false;
 
     let hasStartedHosting = false;
+    let qrReaderActive = false;
 
     // Optional: Auto-start hosting immediately or let them click "Start"
     // Let's implement an explicit start so they can name it first.
@@ -54,7 +55,6 @@
         const payload = await chatManager.hostChat();
         base64Payload = payload;
         generatedUrl = `${window.location.origin}/chat/join#offer=${payload}`;
-        renderQR(generatedUrl);
     }
 
     async function handleAcceptAnswer() {
@@ -62,23 +62,9 @@
         await chatManager.acceptAnswer(answerInput);
     }
 
-    async function renderQR(data: string) {
-        setTimeout(async () => {
-            if (qrCanvas) {
-                try {
-                    await QRCode.toCanvas(qrCanvas, data, {
-                        width: 250,
-                        margin: 2,
-                        color: {
-                            dark: "#0f172a",
-                            light: "#ffffff",
-                        },
-                    });
-                } catch (err) {
-                    console.error("QR code err", err);
-                }
-            }
-        }, 100);
+    function onScanSuccess(decodedText: string) {
+        answerInput = decodedText;
+        qrReaderActive = false; // Turn off scanner once we get a code
     }
 
     function copyLink() {
@@ -188,7 +174,11 @@
                                 <div
                                     class="bg-white p-2 inline-block rounded-2xl shadow-md border border-slate-100 dark:border-slate-800"
                                 >
-                                    <canvas bind:this={qrCanvas}></canvas>
+                                    <QrGenerator
+                                        value={generatedUrl}
+                                        width={250}
+                                        darkColor="#0f172a"
+                                    />
                                 </div>
                                 <div class="flex-1 w-full space-y-2">
                                     <input
@@ -217,13 +207,47 @@
                                 3. Confirm Connection
                             </h3>
                             <p class="text-sm text-slate-500">
-                                When they join, paste their response code here.
+                                When they join, paste their response code here
+                                or scan their QR response.
                             </p>
-                            <textarea
-                                bind:value={answerInput}
-                                placeholder="Paste response code here..."
-                                class="w-full h-24 bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-2xl px-4 py-3 text-sm font-mono text-slate-600 outline-none focus:border-emerald-500 resize-none"
-                            ></textarea>
+
+                            <div class="flex items-center gap-4">
+                                <textarea
+                                    bind:value={answerInput}
+                                    placeholder="Paste response code here..."
+                                    class="flex-1 h-24 bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-2xl px-4 py-3 text-sm font-mono text-slate-600 outline-none focus:border-emerald-500 resize-none"
+                                ></textarea>
+
+                                <button
+                                    on:click={() =>
+                                        (qrReaderActive = !qrReaderActive)}
+                                    class="h-24 px-4 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 rounded-2xl transition-colors flex flex-col items-center justify-center gap-2 font-bold text-xs"
+                                >
+                                    <svg
+                                        class="w-6 h-6"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        ><path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M3 4a1 1 0 011-1h4a1 1 0 010 2H5v3a1 1 0 01-2 0V4zm14-1a1 1 0 011 1v3a1 1 0 01-2 0V5h-3a1 1 0 010-2h4zM4 17a1 1 0 012 0v3h3a1 1 0 010 2H5a1 1 0 01-1-1v-4zm15 1a1 1 0 01-2 0v-3a1 1 0 012 0v4a1 1 0 01-1 1h-4a1 1 0 010-2h3v-3z"
+                                        ></path></svg
+                                    >
+                                    {qrReaderActive ? "Cancel Scan" : "Scan QR"}
+                                </button>
+                            </div>
+
+                            {#if qrReaderActive}
+                                <div
+                                    class="w-full mt-4 animate-in fade-in slide-in-from-top-4"
+                                >
+                                    <QrReader {onScanSuccess} />
+                                </div>
+                            {/if}
+
                             <button
                                 disabled={!answerInput.trim() ||
                                     $connectionState === "connecting"}

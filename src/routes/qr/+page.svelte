@@ -1,10 +1,7 @@
 <script lang="ts">
-    import { onMount, onDestroy } from "svelte";
-    import QRCode from "qrcode";
-    import {
-        Html5QrcodeScanner,
-        Html5QrcodeSupportedFormats,
-    } from "html5-qrcode";
+    import { onMount } from "svelte";
+    import QrReader from "$lib/components/QrReader.svelte";
+    import QrGenerator from "$lib/components/QrGenerator.svelte";
 
     let text = $state("");
 
@@ -12,64 +9,21 @@
 
     // Read Mode State
     let scannerResult = $state("");
-    let scanner: Html5QrcodeScanner | null = $state(null);
-    let scanError = $state("");
-
-    // Generate Mode State
-    let generateInput = "Hello World";
-    let canvasElement: HTMLCanvasElement;
-    let generateError = "";
 
     // Toggle logic
     function switchTab(tab: "read" | "generate") {
         activeTab = tab;
-        if (tab === "generate") {
-            stopScanner();
-            if (text === "") {
-                text = "Hello World";
-            }
-            setTimeout(generateQR, 100);
-        } else {
-            setTimeout(startScanner, 100);
+        if (tab === "generate" && text === "") {
+            text = "Hello World";
         }
     }
 
     // --- Read Mode ---
     function onScanSuccess(decodedText: string) {
         text = decodedText;
-        scanError = "";
+        scannerResult = decodedText;
         // Optional: stop scanning after successful scan
         // scanner?.clear();
-    }
-
-    function onScanFailure(error: string) {
-        // Html5QrcodeScanner throws continuous warnings, safe to ignore for UI.
-        console.warn(`Code scan error = ${error}`);
-    }
-
-    function startScanner() {
-        if (!document.getElementById("reader")) return;
-
-        scanner = new Html5QrcodeScanner(
-            "reader",
-            {
-                fps: 10,
-                qrbox: { width: 250, height: 250 },
-                formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE],
-                supportAudio: false,
-            },
-            false,
-        );
-        scanner.render(onScanSuccess, onScanFailure);
-    }
-
-    function stopScanner() {
-        if (scanner) {
-            scanner.clear().catch((err) => {
-                console.error("Failed to clear html5-qrcode scanner", err);
-            });
-            scanner = null;
-        }
     }
 
     async function copyScannedText() {
@@ -83,32 +37,13 @@
     }
 
     // --- Generate Mode ---
-    async function generateQR() {
-        if (!canvasElement) return;
-
-        try {
-            if (!generateInput.trim()) {
-                generateError = "Please enter text to generate a QR Code.";
-                return;
-            }
-            generateError = "";
-            await QRCode.toCanvas(canvasElement, text, {
-                width: 300,
-                margin: 2,
-                color: {
-                    dark: "#0891b2", // Cyan 600
-                    light: "#ffffff",
-                },
-            });
-        } catch (err) {
-            console.error(err);
-            generateError = "Failed to generate QR Code.";
-        }
-    }
+    let qrGeneratorComponent: QrGenerator | undefined = $state();
 
     async function copyGeneratedQR() {
-        if (!canvasElement) return;
-        canvasElement.toBlob(async (blob) => {
+        if (!qrGeneratorComponent) return;
+        const canvas = qrGeneratorComponent.getCanvas();
+        if (!canvas) return;
+        canvas.toBlob(async (blob) => {
             if (blob) {
                 try {
                     await navigator.clipboard.write([
@@ -124,16 +59,6 @@
             }
         }, "image/png");
     }
-
-    onMount(() => {
-        if (activeTab === "read") {
-            startScanner();
-        }
-    });
-
-    onDestroy(() => {
-        stopScanner();
-    });
 </script>
 
 <div
@@ -188,10 +113,7 @@
                 <div
                     class="w-full max-w-lg flex flex-col gap-6 animate-fade-in"
                 >
-                    <div
-                        id="reader"
-                        class="rounded-xl overflow-hidden shadow-lg border-2 border-cyan-500/30 bg-black/5 dark:bg-black/50 w-full min-h-[300px]"
-                    ></div>
+                    <QrReader {onScanSuccess} />
 
                     <div class="w-full flex flex-col gap-3">
                         <label
@@ -249,27 +171,25 @@
                             class="w-full flex-1 p-4 rounded-xl border border-gray-200 dark:border-white/10 bg-white/50 dark:bg-black/30 backdrop-blur-md outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 resize-y min-h-[120px] transition-all"
                             placeholder="Enter text or URL to encode..."
                             bind:value={text}
-                            on:input={generateQR}
                         ></textarea>
-                        {#if generateError}
-                            <p class="text-red-500 text-sm mt-1">
-                                {generateError}
-                            </p>
-                        {/if}
                     </div>
 
                     <!-- QR Display -->
                     <div
                         class="flex flex-col items-center justify-center bg-white p-6 rounded-2xl shadow-[0_0_40px_rgba(8,145,178,0.2)] dark:shadow-[0_0_40px_rgba(8,145,178,0.15)] transition-all"
                     >
-                        <canvas bind:this={canvasElement} class="rounded-xl"
-                        ></canvas>
+                        <QrGenerator
+                            bind:this={qrGeneratorComponent}
+                            value={text}
+                            width={300}
+                            darkColor="#0891b2"
+                        />
                     </div>
 
                     <button
                         on:click={copyGeneratedQR}
-                        disabled={!generateInput.trim()}
-                        class="mt-4 px-6 py-4 rounded-xl font-bold transition-all flex items-center justify-center gap-2 {generateInput.trim()
+                        disabled={!text.trim()}
+                        class="mt-4 px-6 py-4 rounded-xl font-bold transition-all flex items-center justify-center gap-2 {text.trim()
                             ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:scale-[1.02] active:scale-95 shadow-xl shadow-cyan-500/20'
                             : 'bg-gray-200 dark:bg-white/5 text-gray-400 dark:text-gray-500 cursor-not-allowed'}"
                     >
@@ -307,38 +227,5 @@
     }
     .animate-fade-in {
         animation: fade-in 0.4s ease-out forwards;
-    }
-
-    /* Style the HTML5 QR Code scanner UI heavily since it injects ugly DOM elements */
-    :global(#reader) {
-        border: none !important;
-    }
-    :global(#reader__scan_region) {
-        background: transparent !important;
-    }
-    :global(#reader__dashboard_section_csr span) {
-        color: inherit !important;
-    }
-    :global(#reader button) {
-        background-color: #0891b2 !important; /* Cyan 600 */
-        color: white !important;
-        border: none !important;
-        padding: 0.5rem 1rem !important;
-        border-radius: 0.5rem !important;
-        font-weight: 600 !important;
-        cursor: pointer !important;
-        margin: 0.5rem !important;
-        transition: transform 0.2s !important;
-    }
-    :global(#reader button:hover) {
-        transform: scale(1.05) !important;
-    }
-    :global(#reader select) {
-        background: rgba(255, 255, 255, 0.1) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        color: inherit !important;
-        padding: 0.5rem !important;
-        border-radius: 0.5rem !important;
-        margin-bottom: 1rem !important;
     }
 </style>
