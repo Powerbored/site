@@ -62,7 +62,7 @@
 </script>
 
 <div
-    class="h-full w-full min-h-screen p-8 text-gray-900 dark:text-gray-100 bg-white dark:bg-black/90 flex flex-col items-center"
+    class="h-full w-full min-h-screen p-8 text-gray-900 dark:text-gray-100 flex flex-col items-center"
 >
     <div
         class="max-w-3xl w-full flex flex-col items-center gap-8 mt-12 bg-white/5 dark:bg-white/5 backdrop-blur-xl border border-black/10 dark:border-white/10 p-8 rounded-3xl shadow-2xl"

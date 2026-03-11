@@ -36,6 +36,7 @@
 - generate nav based on routes
 - store nav data in page files?
 - mobile nav icon should be X not +
+- show active item when on a subroute
 
 ### icons
 
@@ -50,7 +51,3 @@ this can be SSR so that the required icons are available on load.
 - make qr read and generate components
   - qr generate should popover on click
 - add qr read to host page to get join response
-
-### qr
-
-- fix black background
