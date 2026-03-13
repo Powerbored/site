@@ -136,9 +136,10 @@
 
 <div
     bind:this={containerElement}
-    class="inline-flex flex-col items-center bg-transparent {isFullscreen
-        ? 'justify-center w-full h-full bg-slate-900/90 backdrop-blur-sm p-8'
+    class="inline-flex flex-col gap-4 items-center bg-transparent {isFullscreen
+        ? 'justify-center w-full h-full p-8'
         : ''}"
+    style={isFullscreen ? `background-color: ${lightColor};` : ""}
 >
     <div class="relative group">
         <!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -146,7 +147,7 @@
         <canvas
             bind:this={canvasElement}
             class="rounded-xl transition-all duration-300 {isFullscreen
-                ? 'shadow-[0_0_50px_rgba(0,0,0,0.5)] cursor-pointer'
+                ? 'cursor-pointer'
                 : ''}"
             on:click={() => {
                 if (isFullscreen) toggleFullscreen();
@@ -158,13 +159,13 @@
     </div>
 
     {#if generateError}
-        <p class="text-red-500 text-xs mt-2">{generateError}</p>
+        <p class="text-red-500 text-xs">{generateError}</p>
     {/if}
 
     <!-- Compact Utility Bar -->
     {#if !generateError}
         <div
-            class="flex items-center gap-1 mt-4 bg-slate-100 dark:bg-slate-800 p-1.5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm transition-all text-slate-500 dark:text-slate-400"
+            class="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1.5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm transition-all text-slate-500 dark:text-slate-400"
         >
             <!-- Fullscreen -->
             <button
@@ -318,7 +319,7 @@
     <!-- Show Text Block -->
     {#if showText}
         <div
-            class="mt-4 w-full p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 animate-in fade-in slide-in-from-top-2"
+            class="w-full p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 animate-in fade-in slide-in-from-top-2"
         >
             <h4
                 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2"

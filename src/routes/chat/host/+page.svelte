@@ -135,7 +135,7 @@
             <!-- Start button if not started -->
             {#if !hasStartedHosting}
                 <button
-                    on:click={handleHost}
+                    onclick={handleHost}
                     disabled={!chatName.trim()}
                     class="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-black uppercase tracking-widest text-sm rounded-2xl transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50"
                 >
@@ -169,33 +169,27 @@
                             </p>
 
                             <div
+                                class="flex flex-col items-center justify-center bg-white p-6 rounded-2xl shadow-[0_0_40px_rgba(8,145,178,0.2)] dark:shadow-[0_0_40px_rgba(8,145,178,0.15)] transition-all"
+                            >
+                                <QrGenerator value={generatedUrl} />
+                            </div>
+                            <div
                                 class="flex flex-col sm:flex-row items-center gap-6"
                             >
-                                <div
-                                    class="bg-white p-2 inline-block rounded-2xl shadow-md border border-slate-100 dark:border-slate-800"
+                                <input
+                                    type="text"
+                                    readonly
+                                    value={generatedUrl}
+                                    class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-xl text-xs font-mono text-slate-500 outline-none"
+                                />
+                                <button
+                                    onclick={copyLink}
+                                    class="w-40 px-4 py-3 bg-slate-900 dark:bg-white {copySuccess
+                                        ? 'text-emerald-600'
+                                        : 'text-white dark:text-slate-900'} font-bold text-sm rounded-xl hover:bg-slate-800 dark:hover:bg-slate-200 transition-colors whitespace-nowrap"
                                 >
-                                    <QrGenerator
-                                        value={generatedUrl}
-                                        width={250}
-                                        darkColor="#0f172a"
-                                    />
-                                </div>
-                                <div class="flex-1 w-full space-y-2">
-                                    <input
-                                        type="text"
-                                        readonly
-                                        value={generatedUrl}
-                                        class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-xl text-xs font-mono text-slate-500 outline-none"
-                                    />
-                                    <button
-                                        on:click={copyLink}
-                                        class="w-full px-4 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-sm rounded-xl hover:bg-slate-800 dark:hover:bg-slate-200 transition-colors whitespace-nowrap"
-                                    >
-                                        {copySuccess
-                                            ? "Copied Link!"
-                                            : "Copy Link"}
-                                    </button>
-                                </div>
+                                    {copySuccess ? "Copied!" : "Copy Link"}
+                                </button>
                             </div>
                         </div>
 
@@ -219,7 +213,7 @@
                                 ></textarea>
 
                                 <button
-                                    on:click={() =>
+                                    onclick={() =>
                                         (qrReaderActive = !qrReaderActive)}
                                     class="h-24 px-4 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 rounded-2xl transition-colors flex flex-col items-center justify-center gap-2 font-bold text-xs"
                                 >
@@ -251,7 +245,7 @@
                             <button
                                 disabled={!answerInput.trim() ||
                                     $connectionState === "connecting"}
-                                on:click={handleAcceptAnswer}
+                                onclick={handleAcceptAnswer}
                                 class="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black uppercase tracking-widest text-sm rounded-2xl transition-all shadow-lg shadow-emerald-500/20 disabled:opacity-50"
                             >
                                 {$connectionState === "connecting"

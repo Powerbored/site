@@ -51,3 +51,8 @@ this can be SSR so that the required icons are available on load.
 - make qr read and generate components
   - qr generate should popover on click
 - add qr read to host page to get join response
+
+### qr
+
+- QR card appearance should be baked into component
+  - svelte doesn't appear to have a nice way to handle conditional wrapping.
