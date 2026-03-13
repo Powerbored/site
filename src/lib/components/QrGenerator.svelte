@@ -89,6 +89,9 @@
             isFullscreen = !!document.fullscreenElement;
         };
         document.addEventListener("fullscreenchange", handleFullscreenChange);
+        if (value) {
+            generateQR(value, width);
+        }
         return () => {
             document.removeEventListener(
                 "fullscreenchange",

@@ -10,11 +10,16 @@
     // Read Mode State
     let scannerResult = $state("");
 
+    // --- Generate Mode ---
+    let qrGeneratorComponent: QrGenerator | undefined = $state();
+
     // Toggle logic
     function switchTab(tab: "read" | "generate") {
         activeTab = tab;
-        if (tab === "generate" && text === "") {
-            text = "Hello World";
+        if (tab === "generate") {
+            if (text === "") {
+                text = "Hello World";
+            }
         }
     }
 
@@ -35,9 +40,6 @@
             console.error("Failed to copy text: ", err);
         }
     }
-
-    // --- Generate Mode ---
-    let qrGeneratorComponent: QrGenerator | undefined = $state();
 </script>
 
 <div
@@ -61,7 +63,7 @@
                 'read'
                     ? 'text-white'
                     : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'}"
-                on:click={() => switchTab("read")}
+                onclick={() => switchTab("read")}
             >
                 Read
             </button>
@@ -70,7 +72,7 @@
                 'generate'
                     ? 'text-white'
                     : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'}"
-                on:click={() => switchTab("generate")}
+                onclick={() => switchTab("generate")}
             >
                 Generate
             </button>
@@ -110,7 +112,7 @@
                     </div>
 
                     <button
-                        on:click={copyScannedText}
+                        onclick={copyScannedText}
                         disabled={!scannerResult}
                         class="px-6 py-4 rounded-xl font-bold transition-all flex items-center justify-center gap-2 {scannerResult
                             ? 'bg-black dark:bg-white text-white dark:text-black hover:scale-[1.02] active:scale-95 shadow-xl shadow-cyan-500/20'
