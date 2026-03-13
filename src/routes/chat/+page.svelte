@@ -173,18 +173,7 @@
                     disabled={$connectionState !== "connected"}
                     class="p-3.5 text-slate-400 hover:text-blue-500 dark:text-slate-500 dark:hover:text-blue-400 transition-colors bg-slate-100 dark:bg-slate-900 rounded-2xl hover:bg-blue-50 dark:hover:bg-blue-900/30 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                    <svg
-                        class="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        ><path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2.5"
-                            d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"
-                        ></path></svg
-                    >
+                    <Icon name="paperclip" class="w-5 h-5" />
                 </button>
                 <input
                     type="file"
@@ -251,18 +240,7 @@
                     <div
                         class="w-16 h-16 bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform"
                     >
-                        <svg
-                            class="w-8 h-8"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            ><path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M12 4v16m8-8H4"
-                            ></path></svg
-                        >
+                        <Icon name="plus" class="w-8 h-8" />
                     </div>
                     <h3
                         class="text-xl font-black text-slate-900 dark:text-white mb-2"
@@ -282,18 +260,7 @@
                     <div
                         class="w-16 h-16 bg-emerald-100 text-emerald-600 dark:bg-emerald-900/50 dark:text-emerald-400 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform"
                     >
-                        <svg
-                            class="w-8 h-8"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            ><path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
-                            ></path></svg
-                        >
+                        <Icon name="link" class="w-8 h-8" />
                     </div>
                     <h3
                         class="text-xl font-black text-slate-900 dark:text-white mb-2"
@@ -313,21 +280,7 @@
                     <div
                         class="w-14 h-14 bg-slate-200 text-slate-600 dark:bg-slate-800 dark:text-slate-300 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0"
                     >
-                        <!-- Reusing clock_filled icon basically, or a clock svg -->
-                        <svg
-                            class="w-7 h-7"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                            ></path>
-                        </svg>
+                        <Icon name="clock" class="w-7 h-7" />
                     </div>
                     <div class="flex-1 text-center md:text-left">
                         <h3
@@ -342,19 +295,10 @@
                     <div
                         class="hidden md:flex bg-white dark:bg-slate-900 rounded-full p-2 border border-slate-200 dark:border-slate-700 shadow-sm opacity-50 group-hover:opacity-100 transition-opacity"
                     >
-                        <svg
+                        <Icon
+                            name="chevron-right"
                             class="w-5 h-5 text-slate-500"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                            ><path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2.5"
-                                d="M9 5l7 7-7 7"
-                            ></path></svg
-                        >
+                        />
                     </div>
                 </a>
             </div>

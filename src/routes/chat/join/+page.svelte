@@ -2,6 +2,7 @@
     import { onMount, onDestroy } from "svelte";
     import QrGenerator from "$lib/components/QrGenerator.svelte";
     import QrReader from "$lib/components/QrReader.svelte";
+    import Icon from "$lib/components/Icon.svelte";
     import { goto } from "$app/navigation";
     import {
         chatManager,
@@ -80,18 +81,7 @@
                 href="/chat"
                 class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 transition-colors text-slate-500 dark:text-slate-400"
             >
-                <svg
-                    class="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    ><path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M15 19l-7-7 7-7"
-                    ></path></svg
-                >
+                <Icon name="chevron-left" class="w-5 h-5" />
             </a>
             <h1
                 class="text-3xl font-black text-slate-900 dark:text-white tracking-tighter"
@@ -127,19 +117,7 @@
                             on:click={() => (qrReaderActive = !qrReaderActive)}
                             class="h-24 px-4 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 rounded-2xl transition-colors flex flex-col items-center justify-center gap-2 font-bold text-xs"
                         >
-                            <svg
-                                class="w-6 h-6"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
-                                ><path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M3 4a1 1 0 011-1h4a1 1 0 010 2H5v3a1 1 0 01-2 0V4zm14-1a1 1 0 011 1v3a1 1 0 01-2 0V5h-3a1 1 0 010-2h4zM4 17a1 1 0 012 0v3h3a1 1 0 010 2H5a1 1 0 01-1-1v-4zm15 1a1 1 0 01-2 0v-3a1 1 0 012 0v4a1 1 0 01-1 1h-4a1 1 0 010-2h3v-3z"
-                                ></path></svg
-                            >
+                            <Icon name="qr-scan" class="w-6 h-6" />
                             {qrReaderActive ? "Cancel Scan" : "Scan QR"}
                         </button>
                     </div>

@@ -2,6 +2,7 @@
     import { onMount } from "svelte";
     import { themes, messages } from "$lib/birthday";
     import Title from "$lib/components/content/Title.svelte";
+    import Icon from "$lib/components/Icon.svelte";
 
     let toName = "";
     let fromName = "";
@@ -137,18 +138,7 @@
                     <div
                         class="absolute inset-y-0 right-0 flex items-center px-5 pointer-events-none text-slate-400 dark:text-slate-500"
                     >
-                        <svg
-                            class="w-6 h-6"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            ><path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="3"
-                                d="M19 9l-7 7-7-7"
-                            ></path></svg
-                        >
+                        <Icon name="chevron-down" class="w-6 h-6" />
                     </div>
                 </div>
             </div>
@@ -175,18 +165,7 @@
                     <div
                         class="absolute inset-y-0 right-0 flex items-center px-5 pointer-events-none text-slate-400 dark:text-slate-500"
                     >
-                        <svg
-                            class="w-6 h-6"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            ><path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="3"
-                                d="M19 9l-7 7-7-7"
-                            ></path></svg
-                        >
+                        <Icon name="chevron-down" class="w-6 h-6" />
                     </div>
                 </div>
             </div>

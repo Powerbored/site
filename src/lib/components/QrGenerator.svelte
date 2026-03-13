@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import QRCode from "qrcode";
+    import Icon from "$lib/components/Icon.svelte";
 
     export let value: string;
     export let width: number = 250;

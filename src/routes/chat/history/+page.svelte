@@ -4,6 +4,7 @@
         deleteChatHistory,
         renameChatHistory,
     } from "$lib/chatStore";
+    import Icon from "$lib/components/Icon.svelte";
 
     let editingId: string | null = null;
     let editingName = "";
@@ -57,18 +58,7 @@
                 aria-label="Back to Chat Hub"
                 class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 transition-colors text-slate-500 dark:text-slate-400"
             >
-                <svg
-                    class="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    ><path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M15 19l-7-7 7-7"
-                    ></path></svg
-                >
+                <Icon name="chevron-left" class="w-5 h-5" />
             </a>
             <h1
                 class="text-3xl font-black text-slate-900 dark:text-white tracking-tighter"
@@ -108,31 +98,9 @@
                                     title="Role: {chat.role}"
                                 >
                                     {#if chat.role === "host"}
-                                        <svg
-                                            class="w-5 h-5"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                            ><path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M12 4v16m8-8H4"
-                                            ></path></svg
-                                        >
+                                        <Icon name="plus" class="w-5 h-5" />
                                     {:else}
-                                        <svg
-                                            class="w-5 h-5"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                            ><path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
-                                            ></path></svg
-                                        >
+                                        <Icon name="link" class="w-5 h-5" />
                                     {/if}
                                 </div>
                                 <div class="flex-1 min-w-0">
@@ -185,18 +153,7 @@
                                     class="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-colors flex-shrink-0"
                                     title="Delete"
                                 >
-                                    <svg
-                                        class="w-5 h-5"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                        ><path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                        ></path></svg
-                                    >
+                                    <Icon name="trash" class="w-5 h-5" />
                                 </button>
                             </div>
                         </div>
