@@ -16,6 +16,15 @@ const config = {
 		}),
 		paths: {
 			base: '',
+		},
+		prerender: {
+			handleMissingId: ({ id, message }) => {
+				// Ignore IDs matching the SVG use pattern (e.g., from Icon.svelte)
+				if (id.endsWith('_hollow') || id.endsWith('_filled') || id.startsWith('icon-')) {
+					return;
+				}
+				throw new Error(message);
+			}
 		}
 	}
 };
