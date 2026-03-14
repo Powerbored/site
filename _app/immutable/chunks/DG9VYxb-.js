@@ -1,1 +1,0 @@
-import{i as t,ad as T,u as b,T as d,a8 as h}from"./B_tvPe5L.js";function u(r,i){return r===i||r?.[h]===i}function c(r={},i,f,k){return t(()=>{var a,s;return T(()=>{a=s,s=[],b(()=>{r!==f(...s)&&(i(r,...s),a&&u(f(...a),r)&&i(null,...a))})}),()=>{d(()=>{s&&u(f(...s),r)&&i(null,...s)})}}),r}export{c as b};

@@ -1,1 +1,0 @@
-import{ao as c,am as o,a4 as l,u as t}from"./B_tvPe5L.js";function a(e){throw new Error("https://svelte.dev/e/lifecycle_outside_component")}function u(e){o===null&&a(),l&&o.l!==null?i(o).m.push(e):c(()=>{const n=t(e);if(typeof n=="function")return n})}function f(e){o===null&&a(),u(()=>()=>t(e))}function i(e){var n=e.l;return n.u??={a:[],b:[],m:[]}}export{f as a,u as o};
