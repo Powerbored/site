@@ -96,6 +96,11 @@
               ? "Dark Mode"
               : "Light Mode";
 
+    function isActive(itemHref: string, pathname: string): boolean {
+        if (itemHref === `${base}/`) return pathname === itemHref;
+        return pathname === itemHref || pathname.startsWith(itemHref + "/");
+    }
+
     // ── Radial state ───────────────────────────────────────────────
     let isOpen = false;
     let isDragging = false;
@@ -309,8 +314,8 @@
     >
         {#each allItems as item, i}
             {@const pos = positions[i]}
-            {@const isActive =
-                item.kind === "nav" && $page.url.pathname === item.href}
+            {@const itemActive =
+                item.kind === "nav" && isActive(item.href, $page.url.pathname)}
             {@const isHovered = hoveredIndex === i}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <div
@@ -332,7 +337,7 @@
                            transition-all duration-200 shadow-lg border
                            {isHovered
                         ? 'bg-cyan-500/30 border-cyan-400 scale-125 shadow-cyan-500/40'
-                        : isActive
+                        : itemActive
                           ? 'bg-cyan-500/20 border-cyan-400/50 text-cyan-500 dark:text-cyan-400'
                           : 'bg-white/15 dark:bg-white/10 border-white/25 dark:border-white/15 backdrop-blur-xl text-gray-800 dark:text-gray-200 hover:bg-white/30 dark:hover:bg-white/20'}"
                 >
@@ -340,7 +345,7 @@
                         <Icon
                             name={item.icon}
                             size={22}
-                            variant={isActive ? "filled" : "hollow"}
+                            variant={itemActive ? "filled" : "hollow"}
                         />
                     {:else}
                         <Icon name={item.icon} size={22} />

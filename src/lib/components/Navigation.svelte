@@ -102,6 +102,11 @@
             : theme === "dark"
               ? "Dark Mode"
               : "Light Mode";
+
+    function isActive(itemHref: string, pathname: string): boolean {
+        if (itemHref === `${base}/`) return pathname === itemHref;
+        return pathname === itemHref || pathname.startsWith(itemHref + "/");
+    }
 </script>
 
 <nav
@@ -113,22 +118,26 @@
             <li>
                 <a
                     href={item.href}
-                    class="flex items-center h-12 px-4 gap-4 hover:bg-black/5 dark:hover:bg-white/10 transition-colors whitespace-nowrap outline-none focus:bg-black/5 dark:focus:bg-white/10 rounded-r-lg mr-2 {$page
-                        .url.pathname === item.href
+                    class="flex items-center h-12 px-4 gap-4 hover:bg-black/5 dark:hover:bg-white/10 transition-colors whitespace-nowrap outline-none focus:bg-black/5 dark:focus:bg-white/10 rounded-r-lg mr-2 {isActive(
+                        item.href,
+                        $page.url.pathname,
+                    )
                         ? 'text-cyan-600 dark:text-cyan-400 bg-black/5 dark:bg-white/5 font-semibold'
                         : 'text-gray-800 dark:text-gray-200 font-medium'}"
-                    aria-current={$page.url.pathname === item.href
+                    aria-current={isActive(item.href, $page.url.pathname)
                         ? "page"
                         : undefined}
                 >
                     <span
-                        class="text-xl w-8 text-center flex items-center justify-center h-full {$page
-                            .url.pathname === item.href
+                        class="text-xl w-8 text-center flex items-center justify-center h-full {isActive(
+                            item.href,
+                            $page.url.pathname,
+                        )
                             ? 'text-cyan-500 dark:text-cyan-400'
                             : ''}"
                         aria-hidden="true"
                     >
-                        {#if $page.url.pathname === item.href}
+                        {#if isActive(item.href, $page.url.pathname)}
                             <Icon name={item.icon} size={24} variant="filled" />
                         {:else}
                             <Icon name={item.icon} size={24} variant="hollow" />
