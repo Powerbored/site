@@ -129,8 +129,7 @@
         class={className}
         aria-hidden="true"
     >
-        <!-- @ts-ignore -->
-        <use href="#{iconId}" rel="external" />
+        <use href="#{iconId}" {...{ rel: "external" } as any} />
     </svg>
 {:else}
     <!-- Fallback for missing icon that couldn't be loaded at all -->
