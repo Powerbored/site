@@ -7,6 +7,7 @@
 - ~~QR generator~~
 - sed generator
 - awk generator
+- logic node editor
 - RPG character sheet generator
 - ~~Radial thumb nav for mobile~~
 - SVG builder
@@ -21,8 +22,8 @@
   - nav needs rework to use routing properly, rather than relying on page.url
 - menu get stuck open sometimes
   - birthday page
-- duplicate clock icon mask not working due to display none
-  - need to make SVG icon approach better
+- ~~duplicate clock icon mask not working due to display none~~
+  - ~~need to make SVG icon approach better~~
 - mobile nav doest close on menu button tap
 
 ### qr
@@ -36,23 +37,27 @@
 - generate nav based on routes
 - store nav data in page files?
 - mobile nav icon should be X not +
-- show active item when on a subroute
+- ~~show active item when on a subroute~~
 
 ### icons
 
-icons could be better, would prefer to use actual svg files with svg use if 
-this can be SSR so that the required icons are available on load.
+~~icons could be better, would prefer to use actual svg files with svg use if~~
+~~this can be SSR so that the required icons are available on load.~~
 
 ### chat
 
 - ~~save chats with name~~
 - make joining easier
-- make QR popover on click
-- make qr read and generate components
-  - qr generate should popover on click
+- ~~make QR popover on click~~
+- ~~make qr read and generate components~~
+  - ~~qr generate should popover on click~~
 - add qr read to host page to get join response
 
 ### qr
 
 - QR card appearance should be baked into component
   - svelte doesn't appear to have a nice way to handle conditional wrapping.
+
+### birthday
+
+- social sharing format
