@@ -1,0 +1,1 @@
+import{w as f,x as u,aq as _,ar as o,h as t,F as g,a2 as i,C as l,y as r,D as p,z as m}from"./BYTtu14H.js";function C(d,n){let a=null,y=t;var s;if(t){a=p;for(var e=m(document.head);e!==null&&(e.nodeType!==g||e.data!==d);)e=i(e);if(e===null)l(!1);else{var E=i(e);e.remove(),r(E)}}t||(s=document.head.appendChild(f()));try{u(()=>n(s),_|o)}finally{y&&(l(!0),r(a))}}export{C as h};
