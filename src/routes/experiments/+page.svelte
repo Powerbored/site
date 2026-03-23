@@ -1,7 +1,10 @@
 <script>
     import { base } from "$app/paths";
     import Title from "$lib/components/content/Title.svelte";
-    const experiments = [{ id: "hello-world", title: "Hello World" }];
+    const experiments = [
+        { id: "hello-world", title: "Hello World" },
+        { id: "nodes", title: "Logic Node Editor" }
+    ];
 </script>
 
 <div class="container mx-auto p-4">
