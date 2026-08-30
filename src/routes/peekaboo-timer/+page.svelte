@@ -7,6 +7,7 @@
 		color: string;
 		edge: string;
 		offset: number;
+		variant: number;
 		visible: boolean;
 	}
 
@@ -71,12 +72,14 @@
 		const color = colors[Math.floor(Math.random() * colors.length)];
 		const edge = edges[Math.floor(Math.random() * edges.length)];
 		const offset = 20 + Math.random() * 60; // Between 20% and 80%
+		const variant = Math.floor(Math.random() * 8);
 
 		const newKitty: ActiveKitty = {
 			id,
 			color,
 			edge,
 			offset,
+			variant,
 			visible: false,
 		};
 		activeKitties = [...activeKitties, newKitty];
@@ -323,7 +326,7 @@
 						? '0%'
 						: '100%'});"
 				>
-					<Kitty color={kitty.color} />
+					<Kitty color={kitty.color} variant={kitty.variant} />
 				</div>
 			</div>
 		{/each}
