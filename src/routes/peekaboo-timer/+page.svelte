@@ -2,19 +2,27 @@
 	import { onMount, onDestroy } from "svelte";
 	import Kitty from "./Kitty.svelte";
 
+	interface ActiveKitty {
+		id: number;
+		color: string;
+		edge: string;
+		offset: number;
+		visible: boolean;
+	}
+
 	let intervalSeconds = 10;
 	let remainingTime = 10;
+	let intervalCount = 0;
 	let isRunning = false;
 
-	let kittyVisible = false;
-	let kittyColor = "#4ade80";
-	let kittyEdge = "bottom";
-	let kittyOffset = 50; // percentage
+	let activeKitties: ActiveKitty[] = [];
+	let kittyIdCounter = 0;
 
 	let containerRef: HTMLDivElement;
 	let animationFrameId: number;
 	let lastTime = 0;
-	let timeoutId: number | NodeJS.Timeout;
+	let wakeLock: WakeLockSentinel | null = null;
+	let orientationAngle = 0;
 
 	const colors = [
 		"#4ade80",
@@ -59,17 +67,39 @@
 	}
 
 	function triggerPeekaboo() {
-		kittyColor = colors[Math.floor(Math.random() * colors.length)];
-		kittyEdge = edges[Math.floor(Math.random() * edges.length)];
-		kittyOffset = 20 + Math.random() * 60; // Between 20% and 80%
+		const id = ++kittyIdCounter;
+		const color = colors[Math.floor(Math.random() * colors.length)];
+		const edge = edges[Math.floor(Math.random() * edges.length)];
+		const offset = 20 + Math.random() * 60; // Between 20% and 80%
 
-		kittyVisible = true;
+		const newKitty: ActiveKitty = {
+			id,
+			color,
+			edge,
+			offset,
+			visible: false,
+		};
+		activeKitties = [...activeKitties, newKitty];
+
 		playMeow();
 
-		if (timeoutId) clearTimeout(timeoutId as NodeJS.Timeout);
-		timeoutId = setTimeout(() => {
-			kittyVisible = false;
-		}, 1500); // Kitty stays visible for 1.5s
+		// Trigger slide-in transition after mounting
+		setTimeout(() => {
+			activeKitties = activeKitties.map((k) =>
+				k.id === id ? { ...k, visible: true } : k,
+			);
+		}, 20);
+
+		// Slide-out after 1.5s
+		setTimeout(() => {
+			activeKitties = activeKitties.map((k) =>
+				k.id === id ? { ...k, visible: false } : k,
+			);
+			// Remove from DOM after slide-out animation (500ms)
+			setTimeout(() => {
+				activeKitties = activeKitties.filter((k) => k.id !== id);
+			}, 500);
+		}, 1500);
 	}
 
 	function updateTimer(time: number) {
@@ -81,42 +111,78 @@
 		remainingTime -= delta;
 
 		if (remainingTime <= 0) {
-			// Timer finished! Trigger peekaboo and reset remainingTime seamlessly
+			// Timer finished! Trigger peekaboo, increment interval count and reset remainingTime
 			triggerPeekaboo();
+			intervalCount++;
 			remainingTime = intervalSeconds + (remainingTime % intervalSeconds);
 		}
 
 		animationFrameId = requestAnimationFrame(updateTimer);
 	}
 
+	async function requestWakeLock() {
+		try {
+			if (typeof navigator !== "undefined" && "wakeLock" in navigator) {
+				wakeLock = await navigator.wakeLock.request("screen");
+			}
+		} catch (err) {
+			console.error("Wake Lock request failed:", err);
+		}
+	}
+
+	function releaseWakeLock() {
+		if (wakeLock) {
+			wakeLock.release().catch((err) => console.error(err));
+			wakeLock = null;
+		}
+	}
+
+	function handleOrientation(event: DeviceOrientationEvent) {
+		if (event.beta !== null && event.gamma !== null) {
+			// Calculate orientation angle of phone relative to upright portrait position
+			const rad = Math.atan2(event.gamma, event.beta);
+			orientationAngle = -rad * (180 / Math.PI);
+		}
+	}
+
 	async function startTimer() {
 		if (intervalSeconds <= 0) return;
+
+		// Request device orientation permissions if needed (iOS)
+		if (
+			typeof DeviceOrientationEvent !== "undefined" &&
+			typeof (DeviceOrientationEvent as any).requestPermission ===
+				"function"
+		) {
+			try {
+				await (DeviceOrientationEvent as any).requestPermission();
+			} catch (e) {
+				console.error("Device orientation permission failed", e);
+			}
+		}
 
 		try {
 			if (containerRef && !document.fullscreenElement) {
 				await containerRef.requestFullscreen();
 			}
-
-			remainingTime = intervalSeconds;
-			isRunning = true;
-			kittyVisible = false;
-			lastTime = performance.now();
-			animationFrameId = requestAnimationFrame(updateTimer);
 		} catch (err) {
 			console.error(`Error attempting to enable fullscreen: ${err}`);
-			// Fallback to run even if fullscreen fails
-			remainingTime = intervalSeconds;
-			isRunning = true;
-			lastTime = performance.now();
-			animationFrameId = requestAnimationFrame(updateTimer);
 		}
+
+		remainingTime = intervalSeconds;
+		intervalCount = 0;
+		isRunning = true;
+		activeKitties = [];
+		lastTime = performance.now();
+		animationFrameId = requestAnimationFrame(updateTimer);
+		requestWakeLock();
 	}
 
 	function stopTimer() {
 		isRunning = false;
-		kittyVisible = false;
+		activeKitties = [];
+		releaseWakeLock();
 		if (animationFrameId) cancelAnimationFrame(animationFrameId);
-		if (timeoutId) clearTimeout(timeoutId as NodeJS.Timeout);
 		if (typeof document !== "undefined" && document.fullscreenElement) {
 			document.exitFullscreen().catch((err) => console.error(err));
 		}
@@ -128,8 +194,18 @@
 		}
 	}
 
+	function handleVisibilityChange() {
+		if (document.visibilityState === "visible" && isRunning) {
+			requestWakeLock();
+		}
+	}
+
 	onMount(() => {
 		document.addEventListener("fullscreenchange", handleFullscreenChange);
+		document.addEventListener("visibilitychange", handleVisibilityChange);
+		if (typeof window !== "undefined") {
+			window.addEventListener("deviceorientation", handleOrientation);
+		}
 	});
 
 	onDestroy(() => {
@@ -139,12 +215,26 @@
 				"fullscreenchange",
 				handleFullscreenChange,
 			);
+			document.removeEventListener(
+				"visibilitychange",
+				handleVisibilityChange,
+			);
+		}
+		if (typeof window !== "undefined") {
+			window.removeEventListener("deviceorientation", handleOrientation);
 		}
 	});
 
-	$: progress = remainingTime / intervalSeconds;
-	// conic-gradient needs an angle
-	$: angle = progress * 360;
+	$: elapsedProgress = Math.min(
+		1,
+		Math.max(0, 1 - remainingTime / intervalSeconds),
+	);
+	$: elapsedAngle = elapsedProgress * 360;
+	$: isEvenInterval = intervalCount % 2 === 0;
+
+	$: conicGradientStyle = isEvenInterval
+		? `conic-gradient(transparent 0deg ${elapsedAngle}deg, white ${elapsedAngle}deg 360deg)`
+		: `conic-gradient(white 0deg ${elapsedAngle}deg, transparent ${elapsedAngle}deg 360deg)`;
 </script>
 
 <svelte:head>
@@ -193,44 +283,49 @@
 		</div>
 	{:else}
 		<!-- Active Timer Screen -->
-		<div class="absolute inset-0 bg-black z-0 pointer-events-none"></div>
+		<div
+			class="absolute inset-0 z-0 pointer-events-none"
+			style="background: rebeccapurple"
+		></div>
 
-		<!-- Conic Timer -->
+		<!-- Conic Timer Circle (Oriented to device rotation) -->
 		<div
 			class="relative z-10 rounded-full transition-all"
-			style="width: 50vmin; height: 50vmin; background: conic-gradient(white {angle}deg, transparent {angle}deg);"
-		>
-			<!-- Inner dark circle to make it a ring (optional, but looks better) -->
-			<!-- <div class="absolute inset-2 bg-black rounded-full"></div> -->
-		</div>
+			style="width: 50vmin; height: 50vmin; transform: rotate({orientationAngle}deg); background: {conicGradientStyle};"
+		></div>
 
-		<!-- Peekaboo Kitty Outer Container (Instantly positioned and rotated per edge, no transition) -->
-		<div
-			class="absolute z-20 pointer-events-none"
-			style="
-				width: 30vmin;
-				height: 30vmin;
-				{kittyEdge === 'bottom'
-				? `bottom: 0; left: ${kittyOffset}%; transform: translateX(-50%);`
-				: ''}
-				{kittyEdge === 'top'
-				? `top: 0; left: ${kittyOffset}%; transform: translateX(-50%) rotate(180deg);`
-				: ''}
-				{kittyEdge === 'left'
-				? `left: 0; top: ${kittyOffset}%; transform: translateY(-50%) rotate(90deg);`
-				: ''}
-				{kittyEdge === 'right'
-				? `right: 0; top: ${kittyOffset}%; transform: translateY(-50%) rotate(-90deg);`
-				: ''}
-			"
-		>
-			<!-- Inner Sliding Wrapper (Handles transition of translate inside local coordinate space) -->
+		<!-- Peekaboo Kitties (Multiple self-destroying instances) -->
+		{#each activeKitties as kitty (kitty.id)}
 			<div
-				class="w-full h-full transition-transform duration-500 ease-in-out"
-				style="transform: translateY({kittyVisible ? '0%' : '100%'});"
+				class="absolute z-20 pointer-events-none"
+				style="
+					width: 30vmin;
+					height: 30vmin;
+					filter: drop-shadow( 3vmin 3vmin 2px rgba(0, 0, 0, 0.3));
+					{kitty.edge === 'bottom'
+					? `bottom: 0; left: ${kitty.offset}%; transform: translateX(-50%);`
+					: ''}
+					{kitty.edge === 'top'
+					? `top: 0; left: ${kitty.offset}%; transform: translateX(-50%) rotate(180deg);`
+					: ''}
+					{kitty.edge === 'left'
+					? `left: 0; top: ${kitty.offset}%; transform: translateY(-50%) rotate(90deg);`
+					: ''}
+					{kitty.edge === 'right'
+					? `right: 0; top: ${kitty.offset}%; transform: translateY(-50%) rotate(-90deg);`
+					: ''}
+				"
 			>
-				<Kitty color={kittyColor} />
+				<!-- Inner Sliding Wrapper -->
+				<div
+					class="w-full h-full transition-transform duration-500 ease-in-out"
+					style="transform: translateY({kitty.visible
+						? '0%'
+						: '100%'});"
+				>
+					<Kitty color={kitty.color} />
+				</div>
 			</div>
-		</div>
+		{/each}
 	{/if}
 </div>

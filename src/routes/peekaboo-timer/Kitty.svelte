@@ -1,6 +1,6 @@
 <script lang="ts">
-	export let color = '#4ade80'; // Default green, like one of the reference kitties
-	export let style = '';
+	export let color = "#4ade80"; // Default green
+	export let style = "";
 </script>
 
 <svg
@@ -14,14 +14,14 @@
 		<path
 			d="M 15 50 
                C 10 30, 15 10, 20 5 
-               C 25 15, 30 30, 35 45 Z" 
+               C 25 15, 30 30, 35 45 Z"
 		/>
-		
+
 		<!-- Right Ear -->
 		<path
 			d="M 85 50 
                C 90 30, 85 10, 80 5 
-               C 75 15, 70 30, 65 45 Z" 
+               C 75 15, 70 30, 65 45 Z"
 		/>
 
 		<!-- Head (rounded top, flat bottom) -->
@@ -38,7 +38,13 @@
 	<circle cx="65" cy="65" r="4" fill="#1a1a1a" />
 
 	<!-- Mouth/Nose -->
-	<g stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+	<g
+		stroke="#1a1a1a"
+		stroke-width="2.5"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+		fill="none"
+	>
 		<!-- Tiny nose line -->
 		<line x1="50" y1="72" x2="50" y2="76" />
 		<!-- Left curve -->
